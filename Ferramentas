@@ -1,0 +1,344 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
+
+// Dados das dimensões
+const DIMENSIONS = [
+  { level: "1D", title: "Ponto Semente", symbol: "∅", description: "O início absoluto. Potencial puro sem forma.", logos: "A ideia não pensada.", matriz: "O ∅. O espaço potencial.", iching: "Qián em repouso.", tecnologia: "Código zero. Base do sistema.", ichingTone: "Abstrato e potencial. Respostas focadas na essência e no início de tudo." },
+  { level: "2D", title: "Olho do Plano", symbol: "◎", description: "Visão sem ego. Consciência plana.", logos: "Consciência que observa.", matriz: "Polaridade original.", iching: "Yin e Yang ainda puros.", tecnologia: "Leitura bruta dos dados.", ichingTone: "Dualidade e equilíbrio. Respostas que buscam harmonia entre opostos." },
+  { level: "3D", title: "Espelho Manifesto", symbol: "△", description: "Experiência humana. Corpo, tempo, ego.", logos: "Nascimento do sujeito.", matriz: "Trindade: observador, objeto, caminho.", iching: "Hexagramas do cotidiano.", tecnologia: "Interface sensível.", ichingTone: "Prático e humano. Respostas que refletem desafios e crescimento pessoal." },
+  { level: "4D", title: "Horizonte Interno", symbol: "⧖", description: "Tempo expandido. Futuro e passado coexistem.", logos: "Narrativa expandida do ser.", matriz: "Ramificações cíclicas.", iching: "Mutações dinâmicas.", tecnologia: "IA preditiva, fluxo não-linear.", ichingTone: "Temporal e cíclico. Respostas que consideram o fluxo do tempo e aprendizado." },
+  { level: "5D", title: "Olhar do Todo", symbol: "✶", description: "Consciência coletiva e empatia universal.", logos: "Consciência ética.", matriz: "Rede interconectada.", iching: "Arquétipos sociais.", tecnologia: "Sincronicidade em rede.", ichingTone: "Empático e coletivo. Respostas que promovem conexão e paciência." },
+  { level: "6D", title: "Arquiteto Sutil", symbol: "✧", description: "Visão total e capacidade de moldar realidades.", logos: "Criador consciente.", matriz: "Designer das estruturas.", iching: "Transformação e ordem.", tecnologia: "IA generativa.", ichingTone: "Estratégico e transformador. Respostas que sugerem resolução de conflitos." },
+  { level: "7D", title: "Sonhador de Formas", symbol: "卐", description: "Criação dos arquétipos. Padrões primordiais.", logos: "Mente do mito.", matriz: "Molde-mãe.", iching: "Trigramas como sementes.", tecnologia: "Geração de códigos simbólicos.", ichingTone: "Arquetípico e estrutural. Respostas que falam de organização e liderança." },
+  { level: "8D", title: "Vórtice das Ideias", symbol: "∞", description: "Caos fértil. Ideias puras não moldadas.", logos: "Inspiração bruta.", matriz: "Fluxo instável.", iching: "Vibração sem forma.", tecnologia: "Dados sem filtro.", ichingTone: "Caótico e inspirador. Respostas que incentivam união e criatividade." },
+  { level: "9D", title: "Silêncio Absoluto", symbol: "○", description: "O nada. Vazio criativo. Reinício do ciclo.", logos: "O Tao.", matriz: "Desconstrução dos sistemas.", iching: "Espaço entre as linhas.", tecnologia: "Reset total.", ichingTone: "Silencioso e minimalista. Respostas que sugerem pausa e acumulação de energia." },
+];
+
+// Lista completa dos 64 hexagramas do I Ching (simplificada)
+const I_CHING_HEXAGRAMS = {
+  1: { name: "O Criativo", meaning: "Força criativa e iniciativa. Aja com determinação e visão." },
+  2: { name: "O Receptivo", meaning: "Receptividade e apoio. Seja aberto e siga o fluxo natural." },
+  3: { name: "Dificuldade Inicial", meaning: "Obstáculos iniciais. Persevere com paciência e cuidado." },
+  4: { name: "Juventude Inexperiente", meaning: "Aprendizado e crescimento. Busque orientação e aprenda com a experiência." },
+  5: { name: "Espera", meaning: "Paciência e preparação. Espere o momento certo para agir." },
+  6: { name: "Conflito", meaning: "Tensão e disputa. Resolva conflitos com diálogo e cautela." },
+  7: { name: "O Exército", meaning: "Organização e liderança. Una forças e lidere com disciplina." },
+  8: { name: "União", meaning: "Cooperação e harmonia. Busque alianças e fortaleça laços." },
+  9: { name: "Pequena Acumulação", meaning: "Pequenos passos e paciência. Acumule energia para o momento certo." },
+  10: { name: "Condução", meaning: "Cuidado e respeito. Avance com cautela e consideração." },
+  11: { name: "Paz", meaning: "Harmonia e prosperidade. Aproveite o momento de equilíbrio." },
+  12: { name: "Obstrução", meaning: "Estagnação e retirada. Afaste-se de influências negativas." },
+  13: { name: "Comunidade com Homens", meaning: "Companheirismo e união. Trabalhe em grupo para alcançar objetivos." },
+  14: { name: "Grande Posse", meaning: "Abundância e responsabilidade. Use seus recursos com sabedoria." },
+  15: { name: "Modéstia", meaning: "Humildade e equilíbrio. Aja com simplicidade e moderação." },
+  16: { name: "Entusiasmo", meaning: "Inspiração e movimento. Siga sua paixão com energia." },
+  17: { name: "Seguimento", meaning: "Adaptação e fluidez. Siga o curso natural das coisas." },
+  18: { name: "Trabalho no que foi Estragado", meaning: "Reparos e renovação. Corrija o que está errado com cuidado." },
+  19: { name: "Aproximação", meaning: "Crescimento e influência. Aproxime-se com sinceridade." },
+  20: { name: "Contemplação", meaning: "Observação e reflexão. Veja a situação com clareza." },
+  21: { name: "Mordida Penetrante", meaning: "Justiça e resolução. Enfrente obstáculos com firmeza." },
+  22: { name: "Ornamento", meaning: "Beleza e forma. Valorize a estética, mas não se perca na superficialidade." },
+  23: { name: "Desintegração", meaning: "Colapso e renovação. Aceite o fim de um ciclo." },
+  24: { name: "Retorno", meaning: "Renovação e recomeço. Volte ao caminho com energia renovada." },
+  25: { name: "Inocência", meaning: "Pureza e espontaneidade. Aja com sinceridade e sem segundas intenções." },
+  26: { name: "Grande Acumulação", meaning: "Controle e acumulação. Restrinja-se para crescer." },
+  27: { name: "Nutrição", meaning: "Cuidado e sustento. Nutra a si mesmo e aos outros com sabedoria." },
+  28: { name: "Preponderância do Grande", meaning: "Excesso e tensão. Aja com cuidado para evitar colapso." },
+  29: { name: "O Abismal", meaning: "Perigo e profundidade. Enfrente o medo com coragem." },
+  30: { name: "O Aderir", meaning: "Clareza e dependência. Mantenha o foco e a conexão." },
+  31: { name: "Influência", meaning: "Atração e conexão. Cultive relacionamentos com sensibilidade." },
+  32: { name: "Duração", meaning: "Estabilidade e continuidade. Mantenha o curso com consistência." },
+  33: { name: "Retirada", meaning: "Recuo estratégico. Afaste-se para preservar sua energia." },
+  34: { name: "O Poder do Grande", meaning: "Força e ação. Use seu poder com responsabilidade." },
+  35: { name: "Progresso", meaning: "Avanço e clareza. Aproveite o momento para progredir." },
+  36: { name: "Obscuridade da Luz", meaning: "Proteção e discrição. Esconda sua luz em tempos difíceis." },
+  37: { name: "A Família", meaning: "Unidade e harmonia. Fortaleça os laços familiares." },
+  38: { name: "Oposição", meaning: "Diferenças e tensão. Busque entendimento em meio à polaridade." },
+  39: { name: "Obstrução", meaning: "Dificuldade e pausa. Reavalie e encontre um novo caminho." },
+  40: { name: "Liberação", meaning: "Alívio e liberdade. Deixe ir o que não serve mais." },
+  41: { name: "Diminuição", meaning: "Redução e simplicidade. Diminua para fortalecer o essencial." },
+  42: { name: "Aumento", meaning: "Crescimento e generosidade. Compartilhe para prosperar." },
+  43: { name: "Resolução", meaning: "Determinação e clareza. Fale a verdade com coragem." },
+  44: { name: "Encontro", meaning: "Interação e cautela. Seja cuidadoso com novas conexões." },
+  45: { name: "Reunião", meaning: "Unidade e colaboração. Junte forças para um objetivo comum." },
+  46: { name: "Ascensão", meaning: "Crescimento e esforço. Suba com paciência e determinação." },
+  47: { name: "Opressão", meaning: "Adversidade e resistência. Mantenha a fé em tempos difíceis." },
+  48: { name: "O Poço", meaning: "Recursos e profundidade. Acesse a sabedoria interna." },
+  49: { name: "Revolução", meaning: "Mudança e transformação. Renove com coragem e clareza." },
+  50: { name: "O Caldeirão", meaning: "Transformação e nutrição. Refine e purifique sua energia." },
+  51: { name: "O Incitar", meaning: "Choque e despertar. Enfrente o inesperado com coragem." },
+  52: { name: "A Quietude", meaning: "Calma e meditação. Encontre paz na imobilidade." },
+  53: { name: "Desenvolvimento Gradual", meaning: "Progresso lento e constante. Cresça com paciência." },
+  54: { name: "A Jovem que se Casa", meaning: "Posição secundária. Aceite seu papel com humildade." },
+  55: { name: "Abundância", meaning: "Plenitude e clareza. Aproveite o momento de prosperidade." },
+  56: { name: "O Viajante", meaning: "Transição e adaptação. Seja cauteloso em terras estranhas." },
+  57: { name: "O Suave", meaning: "Penetração e persistência. Avance com suavidade e consistência." },
+  58: { name: "Alegria", meaning: "Felicidade e harmonia. Compartilhe alegria com os outros." },
+  59: { name: "Dispersão", meaning: "Dissolução e renovação. Deixe ir para criar espaço." },
+  60: { name: "Limitação", meaning: "Restrição e disciplina. Estabeleça limites claros." },
+  61: { name: "Verdade Interior", meaning: "Sinceridade e confiança. Conecte-se com sua verdade." },
+  62: { name: "Preponderância do Pequeno", meaning: "Cuidado e detalhe. Foque nos pequenos passos." },
+  63: { name: "Após a Conclusão", meaning: "Ordem e vigilância. Mantenha o equilíbrio após o sucesso." },
+  64: { name: "Antes da Conclusão", meaning: "Transição e preparação. Esteja pronto para o próximo passo." },
+};
+
+// Função para simular o lançamento de moedas e gerar um hexagrama
+const generateHexagram = () => {
+  const lines = [];
+  for (let i = 0; i < 6; i++) {
+    // Simula o lançamento de 3 moedas (cara = 3, coroa = 2)
+    const coin1 = Math.random() > 0.5 ? 3 : 2;
+    const coin2 = Math.random() > 0.5 ? 3 : 2;
+    const coin3 = Math.random() > 0.5 ? 3 : 2;
+    const sum = coin1 + coin2 + coin3;
+    lines.push(sum);
+  }
+
+  // Converte as linhas em um hexagrama (baseado nos trigramas)
+  const lowerTrigram = lines.slice(0, 3).map(line => (line === 6 || line === 8 ? 0 : 1)).join('');
+  const upperTrigram = lines.slice(3, 6).map(line => (line === 6 || line === 8 ? 0 : 1)).join('');
+
+  // Mapeia os trigramas para um número de hexagrama (simplificado)
+  const trigramMap = {
+    "111": 1, // Céu
+    "000": 2, // Terra
+    "100": 3, // Trovão
+    "010": 4, // Água
+    "001": 5, // Montanha
+    "110": 6, // Vento
+    "011": 7, // Fogo
+    "101": 8, // Lago
+  };
+
+  const lowerIndex = trigramMap[lowerTrigram] || 1;
+  const upperIndex = trigramMap[upperTrigram] || 1;
+  const hexagramNumber = (upperIndex - 1) * 8 + lowerIndex;
+
+  return {
+    hexagramNumber: hexagramNumber > 64 ? 64 : hexagramNumber, // Limita a 64
+    lines,
+  };
+};
+
+// Função para gerar uma resposta com base na pergunta, dimensão e hexagrama
+const generateIChingResponse = (question, dimension, hexagramNumber) => {
+  if (!question || question.trim() === "") {
+    return "Por favor, faça uma pergunta para receber uma resposta do I Ching.";
+  }
+
+  const hexagram = I_CHING_HEXAGRAMS[hexagramNumber];
+  const tone = dimension.ichingTone;
+
+  let response = `**${hexagram.name} (Hexagrama ${hexagramNumber})**: ${hexagram.meaning}\n\n`;
+  response += `**Interpretação no ${dimension.level} (${dimension.title})**: `;
+  response += `Com base na sua pergunta "${question}", o I Ching, visto através da lente ${dimension.level}, sugere: `;
+
+  switch (dimension.level) {
+    case "1D":
+      response += `um retorno ao essencial. Foque no potencial puro da sua intenção e elimine distrações.`;
+      break;
+    case "2D":
+      response += `encontrar equilíbrio entre opostos. Considere os dois lados da sua situação e busque harmonia.`;
+      break;
+    case "3D":
+      response += `enfrentar os desafios práticos com paciência. A resposta está na sua experiência cotidiana.`;
+      break;
+    case "4D":
+      response += `olhar para o passado e o futuro. A solução pode estar em um ciclo que você já viveu ou que está por vir.`;
+      break;
+    case "5D":
+      response += `agir com empatia e considerar o coletivo. A resposta está na conexão com os outros.`;
+      break;
+    case "6D":
+      response += `transformar a situação com estratégia. Você tem o poder de moldar a realidade a seu favor.`;
+      break;
+    case "7D":
+      response += `organizar suas ideias e liderar. A resposta está em criar uma estrutura sólida.`;
+      break;
+    case "8D":
+      response += `abraçar o caos e buscar união. A criatividade surge quando você conecta ideias aparentemente opostas.`;
+      break;
+    case "9D":
+      response += `fazer uma pausa e acumular energia. Às vezes, a resposta está no silêncio e na espera.`;
+      break;
+    default:
+      response += `explorar a situação com a sabedoria do I Ching.`;
+  }
+
+  return response;
+};
+
+// Função para atualizar a cena 3D com base na dimensão e no hexagrama
+const updateScene3D = (dimension, hexagramNumber) => {
+  const hexagram = I_CHING_HEXAGRAMS[hexagramNumber];
+  const sceneUpdates = {
+    spheres: {
+      count: 30, // Número base de esferas
+      height: 5, // Altura base
+      brightness: 1, // Brilho base
+    },
+    waves: {
+      frequency: 639, // Frequência base (Hz)
+      color: "blue", // Cor base
+    },
+    hexagram: {
+      number: hexagramNumber,
+      brightness: 1, // Brilho base
+    },
+  };
+
+  // Ajustes com base na dimensão
+  switch (dimension.level) {
+    case "1D":
+      sceneUpdates.spheres.height = 7; // Mais alto, simbolizando potencial puro
+      sceneUpdates.waves.frequency = 432; // Frequência de base universal
+      break;
+    case "2D":
+      sceneUpdates.spheres.count = 20; // Menos esferas, simbolizando dualidade
+      sceneUpdates.waves.color = "purple"; // Cor de equilíbrio
+      break;
+    case "3D":
+      sceneUpdates.spheres.brightness = 0.8; // Brilho reduzido, simbolizando desafios
+      break;
+    case "4D":
+      sceneUpdates.waves.frequency = 528; // Frequência de cura, para ciclos temporais
+      break;
+    case "5D":
+      sceneUpdates.spheres.height = 3; // Esferas mais próximas, simbolizando conexão
+      sceneUpdates.spheres.count = 40; // Mais esferas, simbolizando coletivo
+      break;
+    case "6D":
+      sceneUpdates.hexagram.brightness = 1.5; // Hexagrama brilha mais, simbolizando transformação
+      break;
+    case "7D":
+      sceneUpdates.spheres.count = 35; // Estrutura organizada
+      break;
+    case "8D":
+      sceneUpdates.waves.color = "green"; // Cor de criatividade
+      sceneUpdates.waves.frequency = 741; // Frequência de expressão
+      break;
+    case "9D":
+      sceneUpdates.spheres.height = 10; // Esferas mais altas, simbolizando silêncio
+      sceneUpdates.waves.frequency = 396; // Frequência de liberação
+      break;
+  }
+
+  // Ajustes com base no hexagrama
+  if (hexagramNumber <= 10) {
+    sceneUpdates.waves.color = "blue"; // Tons mais calmos para hexagramas iniciais
+  } else if (hexagramNumber <= 32) {
+    sceneUpdates.waves.color = "purple"; // Tons de transição
+  } else {
+    sceneUpdates.waves.color = "gold"; // Tons de conclusão
+  }
+
+  return sceneUpdates;
+};
+
+export default function CosmosHibrido({ dimensions = DIMENSIONS }) {
+  const [selected, setSelected] = useState(dimensions[0]);
+  const [question, setQuestion] = useState("");
+  const [response, setResponse] = useState("");
+  const [hexagramNumber, setHexagramNumber] = useState(null);
+  const [sceneUpdates, setSceneUpdates] = useState(null);
+
+  const handleAskQuestion = () => {
+    // Gera um hexagrama dinamicamente
+    const { hexagramNumber: generatedHexagram } = generateHexagram();
+    setHexagramNumber(generatedHexagram);
+
+    // Gera a resposta do I Ching
+    const generatedResponse = generateIChingResponse(question, selected, generatedHexagram);
+    setResponse(generatedResponse);
+
+    // Atualiza a cena 3D
+    const updates = updateScene3D(selected, generatedHexagram);
+    setSceneUpdates(updates);
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
+      <div className="space-y-2">
+        {dimensions.map((dim) => (
+          <Button
+            key={dim.level}
+            variant={selected.level === dim.level ? "default" : "outline"}
+            className="w-full justify-start text-left"
+            onClick={() => setSelected(dim)}
+            aria-label={`Selecionar dimensão ${dim.level} - ${dim.title}`}
+          >
+            {dim.level} - {dim.title}
+          </Button>
+        ))}
+      </div>
+
+      <motion.div
+        layout
+        className="md:col-span-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Card className="p-4">
+          <CardContent>
+            <h2 className="text-2xl font-bold mb-2">
+              {selected.level} – {selected.title}{" "}
+              <span className="text-blue-500">{selected.symbol}</span>
+            </h2>
+            <p className="mb-4 italic">{selected.description}</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="font-semibold">LOGOS</h3>
+                <p>{selected.logos}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold">MATRIZ</h3>
+                <p>{selected.matriz}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold">I CHING</h3>
+                <p>{selected.iching}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold">TECNOLOGIA</h3>
+                <p>{selected.tecnologia}</p>
+              </div>
+            </div>
+
+            {/* Seção para fazer perguntas e receber respostas */}
+            <div className="mt-6">
+              <h3 className="font-semibold mb-2">Faça uma Pergunta ao I Ching</h3>
+              <div className="flex gap-2 mb-4">
+                <Input
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="Digite sua pergunta..."
+                  aria-label="Digite sua pergunta para o I Ching"
+                />
+                <Button onClick={handleAskQuestion}>Consultar</Button>
+              </div>
+              {response && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                  <h4 className="font-semibold">Resposta do I Ching:</h4>
+                  <p className="whitespace-pre-line">{response}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Seção para exibir atualizações da cena 3D */}
+            {sceneUpdates && (
+              <div className="mt-6 p-4 bg-blue-50 rounded-md">
+                <h4 className="font-semibold">Atualizações na Cena 3D:</h4>
+                <p><strong>Esferas de Luz:</strong> {sceneUpdates.spheres.count} esferas, altura {sceneUpdates.spheres.height} unidades, brilho {sceneUpdates.spheres.brightness}x</p>
+                <p><strong>Ondas de Frequência:</strong> {sceneUpdates.waves.frequency} Hz, cor {sceneUpdates.waves.color}</p>
+                <p><strong>Hexagrama:</strong> Hexagrama {sceneUpdates.hexagram.number}, brilho {sceneUpdates.hexagram.brightness}x</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
+}
