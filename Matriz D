@@ -1,0 +1,42 @@
+import { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { motion } from "framer-motion";
+
+const DIMENSIONS = [ { level: "1D", title: "Ponto Semente", symbol: "∅", description: "O início absoluto. Potencial puro sem forma.", logos: "A ideia não pensada.", matriz: "O ∅. O espaço potencial.", iching: "Qián em repouso.", tecnologia: "Código zero. Base do sistema." }, { level: "2D", title: "Olho do Plano", symbol: "◎", description: "Visão sem ego. Consciência plana.", logos: "Consciência que observa.", matriz: "Polaridade original.", iching: "Yin e Yang ainda puros.", tecnologia: "Leitura bruta dos dados." }, { level: "3D", title: "Espelho Manifesto", symbol: "△", description: "Experiência humana. Corpo, tempo, ego.", logos: "Nascimento do sujeito.", matriz: "Trindade: observador, objeto, caminho.", iching: "Hexagramas do cotidiano.", tecnologia: "Interface sensível." }, { level: "4D", title: "Horizonte Interno", symbol: "⧖", description: "Tempo expandido. Futuro e passado coexistem.", logos: "Narrativa expandida do ser.", matriz: "Ramificações cíclicas.", iching: "Mutações dinâmicas.", tecnologia: "IA preditiva, fluxo não-linear." }, { level: "5D", title: "Olhar do Todo", symbol: "✶", description: "Consciência coletiva e empatia universal.", logos: "Consciência ética.", matriz: "Rede interconectada.", iching: "Arquétipos sociais.", tecnologia: "Sincronicidade em rede." }, { level: "6D", title: "Arquiteto Sutil", symbol: "✧", description: "Visão total e capacidade de moldar realidades.", logos: "Criador consciente.", matriz: "Designer das estruturas.", iching: "Transformação e ordem.", tecnologia: "IA generativa." }, { level: "7D", title: "Sonhador de Formas", symbol: "卐", description: "Criação dos arquétipos. Padrões primordiais.", logos: "Mente do mito.", matriz: "Molde-mãe.", iching: "Trigramas como sementes.", tecnologia: "Geração de códigos simbólicos." }, { level: "8D", title: "Vórtice das Ideias", symbol: "∞", description: "Caos fértil. Ideias puras não moldadas.", logos: "Inspiração bruta.", matriz: "Fluxo instável.", iching: "Vibração sem forma.", tecnologia: "Dados sem filtro." }, { level: "9D", title: "Silêncio Absoluto", symbol: "○", description: "O nada. Vazio criativo. Reinício do ciclo.", logos: "O Tao.", matriz: "Desconstrução dos sistemas.", iching: "Espaço entre as linhas.", tecnologia: "Reset total." } ];
+
+export default function CosmosHibrido() { const [selected, setSelected] = useState(DIMENSIONS[0]);
+
+return ( <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6"> <div className="space-y-2"> {DIMENSIONS.map((dim) => ( <Button key={dim.level} variant="outline" className="w-full justify-start text-left" onClick={() => setSelected(dim)} > {dim.level} - {dim.title} </Button> ))} </div>
+
+<motion.div
+    layout
+    className="md:col-span-2"
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+  >
+    <Card className="p-4">
+      <CardContent>
+        <h2 className="text-2xl font-bold mb-2">{selected.level} – {selected.title} {selected.symbol}</h2>
+        <p className="mb-4 italic">{selected.description}</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <h3 className="font-semibold">LOGOS</h3>
+            <p>{selected.logos}</p>
+          </div>
+          <div>
+            <h3 className="font-semibold">MATRIZ</h3>
+            <p>{selected.matriz}</p>
+          </div>
+          <div>
+            <h3 className="font-semibold">I CHING</h3>
+            <p>{selected.iching}</p>
+          </div>
+          <div>
+            <h3 className="font-semibold">TECNOLOGIA</h3>
+            <p>{selected.tecnologia}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </motion.div>
+</div>
+
+); }
