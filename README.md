@@ -7,7 +7,6 @@ Sincrônica e Simbólica: O I Ching revela a realidade atual do usuário e ofere
 Interativa e Imersiva: A cena 3D permite que o usuário experimente, visualize e ajuste a realidade, tornando-a tangível e moldável.
 Co-Criada: A realidade é um processo colaborativo entre o usuário, a dimensão, o I Ching, e a cena 3D, onde a intenção e a ação do usuário têm um papel ativo.
 Em resumo, a realidade no "Cosmos Híbrido" é um estado de ser que reflete o nível de consciência do usuário, podendo ser percebida, interpretada e transformada através das ferramentas do Mapa (dimensões, I Ching, cena 3D). É uma realidade que transcende o material e se torna um espaço de criação consciente e conexão universal
-useState(DIMENSIONS[0]);
 
 return ( <div className="min-h-screen bg-black text-white p-6"> <header className="text-center mb-8"> <h1 className="text-4xl font-bold">Cosmos Híbrido</h1> <p className="text-xl text-gray-400">Mapa das 9 Dimensões da Consciência</p> </header>
 
