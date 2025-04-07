@@ -1,0 +1,10 @@
+// Mapeia os trigramas para um número de hexagrama (simplificado)  const trigramMap = {
+    "111": 1, // Céu
+    "000": 2, // Terra
+    "100": 3, // Trovão
+    "010": 4, // Água
+    "001": 5, // Montanha
+    "110": 6, // Vento
+    "011": 7, // Fogo
+    "101": 8, // Lago
+  };
