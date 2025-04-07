@@ -1,9 +1,12 @@
-# C-smos-Hibr-do
-Mapa das 9 Dimensões
-import { useState } from "react"; import { motion } from "framer-motion";
+Cósmos Híbrido 
+O que é a Realidade no Cosmos Híbrido?
+No contexto do Mapa das 9 Dimensões da Consciência – Cosmos Híbrido, a realidade é um constructo multidimensional que evolui com a consciência do usuário. Ela é:
 
-const DIMENSIONS = [ { level: "1D", title: "Ponto Semente", symbol: "∅", description: "Potencial puro sem forma.", logos: "Ideia não pensada.", matriz: "Espaço potencial.", iching: "Qián em repouso.", tecnologia: "Código zero." }, { level: "2D", title: "Olho do Plano", symbol: "◎", description: "Consciência plana.", logos: "Consciência que observa.", matriz: "Polaridade original.", iching: "Yin e Yang puros.", tecnologia: "Leitura bruta." }, { level: "3D", title: "Espelho Manifesto", symbol: "△", description: "Experiência humana.", logos: "Nascimento do sujeito.", matriz: "Trindade.", iching: "Hexagramas cotidianos.", tecnologia: "Interface sensível." }, { level: "4D", title: "Horizonte Interno", symbol: "⧖", description: "Tempo expandido.", logos: "Narrativa do ser.", matriz: "Ramificações.", iching: "Mutações dinâmicas.", tecnologia: "IA preditiva." }, { level: "5D", title: "Olhar do Todo", symbol: "✶", description: "Consciência coletiva.", logos: "Consciência ética.", matriz: "Rede viva.", iching: "Arquétipos sociais.", tecnologia: "Sincronicidade." }, { level: "6D", title: "Arquiteto Sutil", symbol: "✧", description: "Moldar realidades.", logos: "Criador consciente.", matriz: "Designer estrutural.", iching: "Transformação e ordem.", tecnologia: "IA generativa." }, { level: "7D", title: "Sonhador de Formas", symbol: "卐", description: "Criação dos arquétipos.", logos: "Mente do mito.", matriz: "Molde-mãe.", iching: "Trigramas sementes.", tecnologia: "Códigos simbólicos." }, { level: "8D", title: "Vórtice das Ideias", symbol: "∞", description: "Caos fértil.", logos: "Inspiração bruta.", matriz: "Fluxo instável.", iching: "Vibração pura.", tecnologia: "Dados sem filtro." }, { level: "9D", title: "Silêncio Absoluto", symbol: "○", description: "Vazio criativo.", logos: "O Tao.", matriz: "Desconstrução.", iching: "Espaço entre linhas.", tecnologia: "Reset total." } ];
-
+Fluida e Relativa: A realidade muda dependendo da dimensão (ex.: potencial puro no 1D, caos criativo no 8D).
+Sincrônica e Simbólica: O I Ching revela a realidade atual do usuário e oferece orientação para moldá-la, conectando eventos de forma significativa.
+Interativa e Imersiva: A cena 3D permite que o usuário experimente, visualize e ajuste a realidade, tornando-a tangível e moldável.
+Co-Criada: A realidade é um processo colaborativo entre o usuário, a dimensão, o I Ching, e a cena 3D, onde a intenção e a ação do usuário têm um papel ativo.
+Em resumo, a realidade no "Cosmos Híbrido" é um estado de ser que reflete o nível de consciência do usuário, podendo ser percebida, interpretada e transformada através das ferramentas do Mapa (dimensões, I Ching, cena 3D). É uma realidade que transcende o material e se torna um espaço de criação consciente e conexão universal.
 export default function Home() { const [selected, setSelected] = useState(DIMENSIONS[0]);
 
 return ( <div className="min-h-screen bg-black text-white p-6"> <header className="text-center mb-8"> <h1 className="text-4xl font-bold">Cosmos Híbrido</h1> <p className="text-xl text-gray-400">Mapa das 9 Dimensões da Consciência</p> </header>
