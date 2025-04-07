@@ -2,8 +2,7 @@ import { useState } from "react"; import { Card, CardContent } from "@/component
 
 const DIMENSIONS =
 [{ level:
-"1D", title: "Ponto Semente", symbol: "∅", description:
-"O início absoluto. Potencial puro sem forma.",logos: "A ideia não pensada.", matriz: "O ∅. O espaço potencial.", iching: "Qián em repouso.", tecnologia: "Código zero. Base do sistema." }, { level: 
+"1D", title: "Ponto Semente", symbol: "∅", description:"O início absoluto. Potencial puro sem forma.",logos: "A ideia não pensada.", matriz: "O ∅. O espaço potencial.", iching: "Qián em repouso.", tecnologia: "Código zero. Base do sistema." }, { level: 
 "2D", title: "Olho do Plano", symbol: "◎", description: "Visão sem ego. Consciência plana.", logos: "Consciência que observa.", matriz:"Polaridade original.", iching: "Yin e Yang ainda puros.", tecnologia: "Leitura bruta dos dados." }, { level:
 "3D", title: "Espelho Manifesto", symbol: "△", description: "Experiência humana. Corpo, tempo, ego.", logos: "Nascimento do sujeito.", matriz:"Trindade: observador, objeto, caminho.", iching: "Hexagramas do cotidiano.", tecnologia: "Interface sensível." }, { level:
 "4D", title: "Horizonte Interno", symbol: "⧖", description: "Tempo expandido. Futuro e passado coexistem.", logos: "Narrativa expandida do ser.", matriz: "Ramificações cíclicas.", iching: "Mutações dinâmicas.", tecnologia: "IA preditiva, fluxo não-linear." }, { level: 
